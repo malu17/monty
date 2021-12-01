@@ -1,102 +1,102 @@
 #include "monty.h"
 
 /**
-* main - starting point for monty read
-* @argc: argument count
-* @argv: argument vector
-* @env: environment
-*
-* Return: EXIT_SUCCESS on success, otherwise EXIT_FAILIURE
-*/
-int main(int argc, char **argv)
+ * pall - Print all values on the stack
+ * @stack: pointer to head of stack
+ * @line_num: file's line number
+ * Return: Void
+ */
+
+void pall(stack_t **stack, unsigned int line_num)
 {
-	FILE *fp;
-	char *line;
-	size_t len;
-/*	ssize_t read; */
-	stack_t *head;
-	int lnum, sum, end, i, start, command;
+	stack_t *h = *stack;
+	(void)line_num;
 
-	if (argc != 2)
-		printerr("USAGE: monty file");
-
-	i = 0;
-	head = NULL;
-	lnum = 1;
-	line = NULL;
-	len = 0;
-	fp = fopen(argv[1], "r");
-
-	if (fp == NULL)
-		printerr("Error: Can't open file <file>");
-
-	while (getline(&line, &len, fp) != -1)
+	while (h)
 	{
-/*		process_monty(line, head, lnum); */
-		start = 0;
-		i = 0;
-		while (*(line + start) == ' ')
-			start++;
+		printf("%d\n", h->n);
+		h = h->next;
+	}
+}
 
-		command = check_command(line + start);
-		if (command == 0)
-		{
-			printf("L%d %s\n", lnum, "Not command");
-			exit(1);
-		}
-		end = 0;
+/**
+ * push - Pushes an element to the stack
+ * @stack: pointer to head of stack
+ * @line_num: file's line number
+ * @n: variable
+ * Return: address of new element
+ */
 
-		while (*(line + start + 5 + i) != ' ' && *(line + start + 5 + i) != '\n' && *(line + start + 5 + i) != '\0')
-		{
-			end++;
-			i++;
-		}
-		
-		i = 0;
-		if (command == 1)
-		{
-			sum = 0;
-			while (end > 0)
-			{
-				if (*(line + start + 5 + i) < 48 || *(line + start + 5 + i) > 57)
-					printerr("not number");
-				else
-				{
-					sum = sum + ((iton(*(line + start + 5 + i))) * (powrd(end - 1)));
-				}
-				end--;
-				i++;
-			}
-			add_dnodeint(&head, sum);
-		}
-		else if (command == 2)
-			print_dlistint(head);
-		else if (command == 3)
-			print_top(head);
-		else if (command == 4)
-			op_pop(&head);
-		else if (command == 5)
-			op_swap(head);
-		else if (command == 6)
-			op_add(&head);
-		else if (command == 7)
-			continue;
-                else if (command == 8)
-                        op_sub(&head);
-                else if (command == 9)
-                        op_div(&head);
-                else if (command == 10)
-                        op_mul(&head);
-                else if (command == 11)
-                        op_mod(&head);
-                else if (command == 12)
-                        continue;
-		lnum++;
+void push(stack_t **stack, unsigned int line_num, int n)
+{
+	stack_t *new, *h = *stack;
+
+	if (stack == NULL)
+	{
+		fprintf(stderr, "L%d: usage: push integer", line_num);
+		exit(EXIT_FAILURE);
+	}
+	new = malloc(sizeof(stack_t));
+	if (new == NULL)
+		exit(EXIT_FAILURE);
+	new->prev = NULL;
+	new->n = n;
+	new->next = *stack;
+	if (*stack)
+		h->prev = new;
+	*stack = new;
+}
+
+/**
+ * pop - Removes the top element of the stack
+ * @stack: pointer to head of stack
+ * @line_num: file's line number
+ * Return: Void
+ */
+
+void pop(stack_t **stack, unsigned int line_num)
+{
+	stack_t *h = *stack;
+
+	if (!(*stack))
+	{
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_num);
+		exit(EXIT_FAILURE);
 	}
 
-	fclose(fp);
-	if (line)
-		free(line);
 
-	return(EXIT_SUCCESS);
+	if (h)
+	{
+		*stack = (h)->next;
+		free(h);
+	}
+}
+
+/**
+ * swap - Swaps the top two elements of the stack
+ * @stack: pointer to head of stack
+ * @line_num: file's line number
+ * Return: Void
+ */
+void swap(stack_t **stack, unsigned int line_num)
+{
+	stack_t *h = *stack, *ptr;
+
+	if ((*stack) == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%u: can't swap, stack too short\n", line_num);
+		exit(EXIT_FAILURE);
+	}
+
+	if (h && h->next)
+	{
+		ptr = h->next;
+		if (ptr->next)
+			ptr->next->prev = h;
+		h->next = ptr->next;
+		ptr->prev = NULL;
+		ptr->next = h;
+		h->prev = ptr;
+		*stack = ptr;
+	}
 }

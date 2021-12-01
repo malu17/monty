@@ -1,10 +1,14 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef __HOOLB__
+#define __HOOLB__
 
-#define  _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/syscall.h>
+#include <string.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -13,7 +17,7 @@
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct stack_s
 {
@@ -28,39 +32,27 @@ typedef struct stack_s
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct instruction_s
 {
 	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+	void (*f)(stack_t **stack, unsigned int line_num);
 } instruction_t;
 
-size_t print_dlistint(const stack_t *h);
-stack_t *add_dnodeint(stack_t **head, const int n);
-int powrd(int n);
-void printerr(char *str);
-int iton(char c);
-int check_command(char *line);
-int check_push(char *line);
-int check_pall(char *line);
-size_t print_top(const stack_t *h);
-int check_pint(char *line);
-int check_pop(char *line);
-int op_pop(stack_t **head);
-int check_swap(char *line);
-size_t dlistint_len(const stack_t *h);
-int op_swap(stack_t *h);
-int op_add(stack_t **h);
-int check_add(char *line);
-int check_nop(char *line);
-int op_sub(stack_t **h);
-int check_sub(char *line);
-int op_div(stack_t **h);
-int check_div(char *line);
-int op_mul(stack_t **h);
-int check_mul(char *line);
-int op_mod(stack_t **h);
-int check_mod(char *line);
-int check_comment(char *line);
-#endif /* MONTY_H */
+void pint(stack_t **stack, unsigned int line_num);
+void free_stack(stack_t *head);
+int pushint(char *list, int ln);
+int _strcmp(char *opcode, char *list);
+void add(stack_t **stack, unsigned int line_num);
+void swap(stack_t **stack, unsigned int line_num);
+void pop(stack_t **stack, unsigned int line_num);
+void push(stack_t **stack, unsigned int line_number, int n);
+void pall(stack_t **stack, unsigned int line_num);
+void execute(char *string[], stack_t *stack);
+int nlfind(char *list);
+void free_list(char *a[]);
+int combfind(char *list, int ln);
+
+
+#endif
