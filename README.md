@@ -1,5 +1,4 @@
-# monty : Python Made Even Easier
-
+# monty : 0x19 C - Stacks, Queues - LIFO, FIFO 
 ALX/Holberton's project.
 eliyas fiseha 
 
