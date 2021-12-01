@@ -5,9 +5,9 @@ Examples include useful utilities like transparent support for zipped files,
 useful design patterns such as singleton and cached_class, and many more.
 """
 
-__author__ = "Shyue Ping Ong"
-__copyright__ = "Copyright 2014, The Materials Virtual Lab"
+__author__ = "elias fiseha"
+__copyright__ = "Copyright 2021, elias fiseha"
 __version__ = "2021.8.17"
-__maintainer__ = "Shyue Ping Ong"
-__email__ = "ongsp@ucsd.edu"
-__date__ = "Oct 12 2020"
+__maintainer__ = "elias fiseha"
+__email__ = "asbezah@gmail.com"
+__date__ = "nov 1 2021"
